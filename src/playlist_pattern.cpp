@@ -80,7 +80,7 @@ void playlist_management::item_print(){
 }
 void playlist_management::item_toTxt() {
 	String xml;
-	File f=SPIFFS.open(playlist_management_folder + _list_name + ".txt","w");
+	File f=LittleFS.open(playlist_management_folder + _list_name + ".txt","w");
 	// if (compositions_debug) fsprintfs("save_to_txt: %s\n", playlist_management_folder + _name + ".txt".c_str());
 	if (!f) {Serial.print(F("Error writing ")); Serial.println(playlist_management_folder + _list_name + ".txt"); return;}
 	for (int i=0; i < _item_max; i++) {
@@ -170,7 +170,7 @@ boolean playlist_management::item_restore() {
 		playlist_itemArray[i]._pattern_config 	= "";
 	}
 
-	File f=SPIFFS.open(playlist_management_folder + _list_name + ".txt","r");
+	File f=LittleFS.open(playlist_management_folder + _list_name + ".txt","r");
 	if (!f) {
 		#ifdef DEBUG
 			if (compositions_debug) {
@@ -209,7 +209,7 @@ boolean playlist_management::item_restore() {
 }
 void playlist_management::item_remove(int remove) {
 	String xml;
-	File f=SPIFFS.open(playlist_management_folder + _list_name + ".txt","w");
+	File f=LittleFS.open(playlist_management_folder + _list_name + ".txt","w");
 	if (!f) {Serial.print(F("\n[compositions remove_to_txt] Error writing ")); Serial.println(playlist_management_folder + _list_name + ".txt"); return;}
 	int count =0;
 	#ifdef DEBUG
@@ -305,9 +305,9 @@ void playlist_management::list_lbl(String lbl){
  	playlist_listArray[_list_pos]->_lbl = lbl;
 }
 void playlist_management::list_initialize() {
-	File f = SPIFFS.open(COMPOSTIONS_FILENAME,"r");
+	File f = LittleFS.open(COMPOSTIONS_FILENAME,"r");
 	if (!f){ 
-		f = SPIFFS.open(COMPOSTIONS_FILENAME,"w");
+		f = LittleFS.open(COMPOSTIONS_FILENAME,"w");
 		if (f){
 			#ifdef DEBUG
 				if (compositions_debug) fsprintf("\n[compositionSetup] Start\n");
@@ -333,7 +333,7 @@ void playlist_management::list_initialize() {
 boolean playlist_management::list_fromSpiff(){
 	list_initialize();
 
-	File f=SPIFFS.open(COMPOSTIONS_FILENAME,"r");
+	File f=LittleFS.open(COMPOSTIONS_FILENAME,"r");
 	if (!f) {
 		// #ifdef DEBUG
 			// if (compositions_debug) {
@@ -369,7 +369,7 @@ boolean playlist_management::list_fromSpiff(){
 }
 
 boolean playlist_management::list_toSpiff(){ 
-	File f = SPIFFS.open(COMPOSTIONS_FILENAME,"w");
+	File f = LittleFS.open(COMPOSTIONS_FILENAME,"w");
 
 	if (!f) return false; 	
 
