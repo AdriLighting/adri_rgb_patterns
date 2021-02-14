@@ -99,7 +99,7 @@ void setup()
         WiFi.setPhyMode(WIFI_PHY_MODE_11N);
         wifi_set_sleep_type(NONE_SLEEP_T);
 
-        SPIFFS.begin();
+        LittleFS.begin();
 
 
 

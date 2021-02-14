@@ -47,9 +47,9 @@ String string_split(String A_readString) {
 
 bool compositions_setup() {
 	String 	filename 	= "/compoName.txt"; 
-	File 	f 			= SPIFFS.open(filename,"r");
+	File 	f 			= LittleFS.open(filename,"r");
 	if (!f){ 
-		f = SPIFFS.open(filename,"w");
+		f = LittleFS.open(filename,"w");
 		if (f){
 			#ifdef DEBUG
 				if (compositions_debug) fsprintf("\n[compositionSetup] Start\n");
@@ -75,7 +75,7 @@ int compositions_check(String FILE_NAME) {
 		
 	int count = 0;
 
-	File f=SPIFFS.open(FILE_NAME,"r");
+	File f=LittleFS.open(FILE_NAME,"r");
 	if (!f) {
 		return count;
 	}
@@ -96,7 +96,7 @@ int compositions_check(String FILE_NAME) {
 }
 String compositions_listName() {
 	String 	filename 	= "/compoName.txt";        
-	File 	f 			= SPIFFS.open(filename, "r");
+	File 	f 			= LittleFS.open(filename, "r");
 	String 	line 		= "";
 	String 	ret 		= "";
 	int 	count 		= 0;
@@ -111,7 +111,7 @@ String compositions_listName() {
 } 
 boolean compositions_listGetCnt(int & count) {
 	String filename = "/compoName.txt";        
-	File 	f 		= SPIFFS.open(filename, "r");
+	File 	f 		= LittleFS.open(filename, "r");
 	String 	line 	= "";
 	 		count 	= 0;
 	if (f) {
@@ -128,7 +128,7 @@ boolean compositions_listGetCnt(int & count) {
 } 
 void compositions_listNamePrint() {
 	String filename = "/compoName.txt";        
-	File 	f 		= SPIFFS.open(filename, "r");
+	File 	f 		= LittleFS.open(filename, "r");
 	String 	line 	= "";
 	String 	ret 	= "";
 	int 	count 	= 0;
@@ -157,7 +157,7 @@ void compositions_listNamePrint() {
 
 					if (statu>0) {
 						String pat;
-						readFile(SPIFFS, "/" + name + ".txt" , &pat);
+						readFile(LittleFS, "/" + name + ".txt" , &pat);
 						pRet = "/" + name + ".txt=" + pat + "\n";
 						fsprintf("%10s\n", pRet.c_str());
 					}
@@ -171,7 +171,7 @@ void compositions_listNamePrint() {
 } 
 String compositions_getCompoName(String search) {
 	String 	filename 	= "/compoName.txt";        
-	File 	f 			= SPIFFS.open(filename, "r");
+	File 	f 			= LittleFS.open(filename, "r");
 	String 	line 		= "";
 	String 	ret 		= "";
 	int 	count 		= 0;
@@ -191,7 +191,7 @@ String compositions_getCompoName(String search) {
 } 
 String compositions_getCompoNameByFileName(String search) {
 	String 	filename 	= "/compoName.txt";        
-	File 	f 			= SPIFFS.open(filename, "r");
+	File 	f 			= LittleFS.open(filename, "r");
 	String 	line 		= "";
 	String 	ret 		= "";
 	if (f) {
@@ -210,7 +210,7 @@ String compositions_getCompoNameByFileName(String search) {
 } 
 String compoName_getCurrentName(String search) {
 	String 	filename 	= "/compoName.txt";        
-	File 	f 			= SPIFFS.open(filename, "r");
+	File 	f 			= LittleFS.open(filename, "r");
 	String 	line 		= "";
 	String 	ret 		= "";
 	if (f) {
@@ -228,7 +228,7 @@ String compoName_getCurrentName(String search) {
 	return ret;
 } 
 void compoName_createarray(String path, String * array) {
-	File file = SPIFFS.open(path, "r");
+	File file = LittleFS.open(path, "r");
 	if (!file) {
 		if (compositions_debug) {
 			fsprint("[compositions compoName_createarray] Error writing "); 
@@ -252,7 +252,7 @@ void compoName_createarray(String path, String * array) {
 void compoName_edit(String path, String pos, String vName, String vLbl, String vPos) {
 	String array[30];
 	compoName_createarray(path, array);
-	File f = SPIFFS.open(path,"w");
+	File f = LittleFS.open(path,"w");
 	if (f){
 		#ifdef DEBUG
 			if (compositions_debug) fsprintf("\n[compositions compoName_edit] Start\n");
