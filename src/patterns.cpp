@@ -1,8 +1,5 @@
 #include "patterns.h"
 
-#include <adri_tools.h>
-
-
 
 uint32_t pInitHeap;
 
@@ -16,7 +13,7 @@ uint32_t pInitHeap;
 	int heap_pass = 0;
 
 void pattern_list::heapStats_print(){
-	fsprintfs("\n[pattern_list::heapStats_print]\n");
+	Serial.print(F("\n[pattern_list::heapStats_print]\n"));
 	String 		s;
 	String 		pName;
 	uint32_t 	tMax 	= 0;
@@ -29,7 +26,7 @@ void pattern_list::heapStats_print(){
 		if(p->_heap_total 	> 0) tMax 	+= p->_heap_total;
 		if(p->_timer_total	> 0) tTime 	+= p->_timer_total;
 		if(p->_iteration 	> 0) tIte 	+= p->_iteration;
-		fsprintf("%s\n", s.c_str());
+		Serial.printf_P(PSTR("%s\n"), s.c_str());
 	}	
 
 	static 	int tcnt 	= 0;
@@ -40,7 +37,7 @@ void pattern_list::heapStats_print(){
 			if (ESP.getFreeHeap() > tMax) 		trest = (ESP.getFreeHeap() - tMax);
 			tcnt++;
 			ttot+=tused;
-	fsprintf("[TOTAL] ite:%5d heap-total:%7d heap-rest:%7d heap-moy:%7d - heap-used:%7d |%d/%d|%d| init:%7d free:%7d duration:%5s\n",
+	Serial.printf_P(PSTR("[TOTAL] ite:%5d heap-total:%7d heap-rest:%7d heap-moy:%7d - heap-used:%7d |%d/%d|%d| init:%7d free:%7d duration:%5s\n"),
 		tIte,
 		tMax,
 		trest,
@@ -146,13 +143,13 @@ void heap_stats_get(heap_stats * heap_stat, String _name, String & value) {
 #endif
 
 void heapStats_print(){
-	fsprintfs("\n[heapStatsPatternLoop_print]\n");
+	Serial.print(F("\n[heapStatsPatternLoop_print]\n"));
 
 	static	int tused 	= 0;
 			if (pInitHeap > ESP.getFreeHeap()) 	tused = (pInitHeap - ESP.getFreeHeap());
 
 
-	fsprintf("\tused:%-10d pInitHeap: %-10d getFreeHeap: %-10d\n",
+	Serial.printf_P(PSTR("\tused:%-10d pInitHeap: %-10d getFreeHeap: %-10d\n"),
 		tused,
 		pInitHeap,
 		ESP.getFreeHeap()
@@ -176,7 +173,7 @@ uint8_t pattern_list::item_add(String value){
 		heapStatArray[_initialize_cnt] = new heap_stats(value);
 	#endif
 	#ifdef DEBUG
-		fsprintf("\n[pattern_list::item_add]pos: %d name: %S\n", _initialize_cnt, value.c_str());
+		Serial.printf_P(PSTR("\n[pattern_list::item_add]pos: %d name: %S\n"), _initialize_cnt, value.c_str());
 	#endif
 	_listName[_initialize_cnt] = value;
 	_initialize_cnt++;
@@ -184,10 +181,10 @@ uint8_t pattern_list::item_add(String value){
 }
 
 void pattern_list::print(){
-	fsprintf("\n[pattern_list::print]\n");
+	Serial.println(F("\n[pattern_list::print]\n"));
 	for (int i = 0; i < _maxcnt; ++i)
 	{
-		fsprintf("[%5d] - %s\n", i, _listName[i].c_str());
+		Serial.printf_P(PSTR("[%5d] - %s\n"), i, _listName[i].c_str());
 	}
 }
 

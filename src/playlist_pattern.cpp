@@ -1,17 +1,36 @@
 #include "playlist_pattern.h"
 
-#include <adri_tools.h>
-	#include <ArduinoJson.h>
+#include <ArduinoJson.h>
+#include <LittleFS.h>
 
-		String playlist_management_folder = "/playlist/";
+String playlist_management_folder = "/playlist/";
 
-		bool compositions_debug = false; 
+bool compositions_debug = false; 
 
-		playlist_item 		playlist_itemArray[EFFECTS_MAX];
-		playlist_list		* playlist_listArray[COMPOSTIONS_MAX];
-		playlist_management * playlist_manage;
+playlist_item 		playlist_itemArray[EFFECTS_MAX];
+playlist_list		* playlist_listArray[COMPOSTIONS_MAX];
+playlist_management * playlist_manage;
+
+
 namespace  {
-
+	String literal_item(String name, String value) {
+	   String x="<"+name+">"+value+"</"+name+">";
+	   return x;
+	}
+	String literal_value(String name, String xml){
+	   String open,close;
+	   String value = "";
+	   int start, end;
+	   open="<"+name+">";
+	   close="</"+name+">";
+	   start=xml.indexOf(open);
+	   if (start!=-1) {
+	      start+=name.length()+2;
+	      end=xml.indexOf(close);
+	      value=xml.substring(start,end);
+	   }
+	   return value;
+	}	
 } // name
 
 playlist_management * playlist_instance(){
@@ -28,7 +47,7 @@ playlist_management::playlist_management(){
 }
 
 void playlist_management::print(){
-	fsprintf("\n[playlist_management::print]\n\tname: %s\n\tpos: %d\n\titemMax: %d\n\titemPos: %d\n\titemStatu: %d\n", 
+	Serial.printf_P(PSTR("\n[playlist_management::print]\n\tname: %s\n\tpos: %d\n\titemMax: %d\n\titemPos: %d\n\titemStatu: %d\n"), 
 		_list_name.c_str(),
 		_list_pos,
 		_item_max,
@@ -60,16 +79,14 @@ void playlist_management::json_objectName(JsonObject & object){
 }
 
 void playlist_management::item_jsonObject(JsonObject & object){
-	// fsprintf("\n[playlist_management::item_jsonObject]\n");
 	for (int i = 0; i < _item_max; ++i)
 	{
-		// playlist_itemArray[i].print(i);
         object[String(i)] = playlist_itemArray[i]._pattern_name;
 
 	}
 }
 void playlist_management::item_print(){
-	fsprintf("\n[playlist_management::item_print]\n");
+	Serial.print(F("\n[playlist_management::item_print]\n"));
 	for (int i = 0; i < _item_max; ++i)
 	{
 		playlist_itemArray[i].print(i);
@@ -81,7 +98,6 @@ void playlist_management::item_print(){
 void playlist_management::item_toTxt() {
 	String xml;
 	File f=LittleFS.open(playlist_management_folder + _list_name + ".txt","w");
-	// if (compositions_debug) fsprintfs("save_to_txt: %s\n", playlist_management_folder + _name + ".txt".c_str());
 	if (!f) {Serial.print(F("Error writing ")); Serial.println(playlist_management_folder + _list_name + ".txt"); return;}
 	for (int i=0; i < _item_max; i++) {
 		xml="";
@@ -98,19 +114,19 @@ void playlist_management::item_toArray(int s_pos, String s_patterName, String s_
 	if (s_pos > _item_max) {
 		if ((_item_max) >= COMPOSTIONS_MAX) {
 			#ifdef DEBUG
-				if (compositions_debug) {fsprintf("\n[playlist_management::item_toArray] LIMITE MAXIMUM ATTEINTE\n");}
+				if (compositions_debug) {Serial.printf(F("\n[playlist_management::item_toArray] LIMITE MAXIMUM ATTEINTE\n"));}
 			#endif
 			return;
 		}  	
 		if (_item_max < 0) _item_max = 0;
 		#ifdef DEBUG
-			if (compositions_debug)  fsprintf("[playlist_management::item_toArray]newSav\n");
+			if (compositions_debug)  Serial.printf(F("[playlist_management::item_toArray]newSav\n"));
 		#endif
 		s_pos = _item_max;
 		_item_max++;
 		newSav=true;
 		#ifdef DEBUG
-			if (compositions_debug) fsprintf("\tnewSav\n");
+			if (compositions_debug) Serial.printf(F("\tnewSav\n"));
 		#endif
 	}
 
@@ -124,7 +140,7 @@ void playlist_management::item_toArray(int s_pos, String s_patterName, String s_
 					 if (playlist_itemArray[i]._pos == newNbr) {
 							newNbr = random(0,255);
 							#ifdef DEBUG
-								if (compositions_debug)  fsprintfs("\tnew position: %d\n", newNbr);
+								if (compositions_debug)  Serial.printf_P(PSTR("\tnew position: %d\n"), newNbr);
 							#endif
 					 }  
 					 else find = false;
@@ -156,12 +172,12 @@ void playlist_management::item_toArray(int s_pos, String s_patterName, String s_
 	item_toTxt(); 
 
 	#ifdef DEBUG
-		if (compositions_debug) fsprintf("[composition sav_to_array] Done\n");
+		if (compositions_debug) Serial.print(F("[composition sav_to_array] Done\n"));
 	#endif
 }
 boolean playlist_management::item_restore() {
 	#ifdef DEBUG
-		if (compositions_debug) fsprintf("\n[compositions restore]\n");   
+		if (compositions_debug) Serial.print(F("\n[compositions restore]\n"));   
 	#endif
 	_item_pos = 0;	
 	_item_max = 0;
@@ -188,7 +204,7 @@ boolean playlist_management::item_restore() {
 		if (literal_value("filename", xml) != "") {
 			if (_item_max >= COMPOSTIONS_MAX) {
 				#ifdef DEBUG
-					if (compositions_debug) {fsprintf("\tLIMITE MAXIMUM ATTEINTE\n");}
+					if (compositions_debug) {Serial.print(F("\tLIMITE MAXIMUM ATTEINTE\n"));}
 				#endif
 				break;
 			} else {
@@ -202,7 +218,7 @@ boolean playlist_management::item_restore() {
 	}
 	f.close();
 	#ifdef DEBUG
-		if (compositions_debug) fsprintf("[compositions restore]\n");  
+		if (compositions_debug) Serial.print(F("[compositions restore]\n"));  
 	#endif
 	// if (compositions_debug) compositions_print();
 	return true;
@@ -213,7 +229,7 @@ void playlist_management::item_remove(int remove) {
 	if (!f) {Serial.print(F("\n[compositions remove_to_txt] Error writing ")); Serial.println(playlist_management_folder + _list_name + ".txt"); return;}
 	int count =0;
 	#ifdef DEBUG
-		if (compositions_debug) fsprintf("[compositions remove_to_txt]\n");
+		if (compositions_debug) Serial.print(F("[compositions remove_to_txt]\n"));
 	#endif
 	for (int i=0; i < COMPOSTIONS_MAX; i++) {
 		if ((playlist_itemArray[i]._filename != "") && (playlist_itemArray[i]._filename != playlist_itemArray[remove]._filename )) {
@@ -232,7 +248,7 @@ void playlist_management::item_remove(int remove) {
 	}
 	f.close();
 	#ifdef DEBUG
-		if (compositions_debug) fsprintf("[composition remove_to_txt] Done\n");
+		if (compositions_debug) Serial.print(F("[composition remove_to_txt] Done\n"));
 	#endif
 
 	item_restore();
@@ -294,7 +310,7 @@ void playlist_management::list_statu_set(boolean ret) 	{playlist_instance()->_li
 void playlist_management::list_statu(boolean & ret) 	{ret = playlist_instance()->_list_statu;}
 
 void playlist_management::list_print(){
-	fsprintf("\n[playlist_management::list_print]\n");
+	Serial.print(F("\n[playlist_management::list_print]\n"));
 	for (int i = 0; i < COMPOSTIONS_MAX; ++i) playlist_listArray[i]->print(i);
 }
 void playlist_management::list_pos(int pos){
@@ -310,7 +326,7 @@ void playlist_management::list_initialize() {
 		f = LittleFS.open(COMPOSTIONS_FILENAME,"w");
 		if (f){
 			#ifdef DEBUG
-				if (compositions_debug) fsprintf("\n[compositionSetup] Start\n");
+				if (compositions_debug) Serial.print(F("\n[compositionSetup] Start\n"));
 			#endif
 			String line;
 			for (int i=0; i < COMPOSTIONS_MAX; i++) {
@@ -324,7 +340,7 @@ void playlist_management::list_initialize() {
 			f.print(line);
 			f.close();
 			#ifdef DEBUG
-				if (compositions_debug) fsprintf("[composition setup] Done\n");
+				if (compositions_debug) Serial.print(F("[composition setup] Done\n"));
 			#endif
 		}
 	}    
@@ -351,7 +367,7 @@ boolean playlist_management::list_fromSpiff(){
 
 			if (i >= COMPOSTIONS_MAX) {
 				#ifdef DEBUG
-					if (compositions_debug) {fsprintf("\tLIMITE MAXIMUM ATTEINTE\n");}
+					if (compositions_debug) {Serial.print(F("\tLIMITE MAXIMUM ATTEINTE\n"));}
 				#endif
 				break;
 			} else {
@@ -418,7 +434,7 @@ void playlist_list::setup(){
 
 }
 void playlist_list::print(int cnt){
-	fsprintf("[%3d] [pos: %5s] [name: %-15s] [lbl: %-15s]\n", 
+	Serial.printf_P(PSTR("[%3d] [pos: %5s] [name: %-15s] [lbl: %-15s]\n"), 
 		cnt,
 		_pos.c_str(),
 		_name.c_str(),
@@ -427,15 +443,4 @@ void playlist_list::print(int cnt){
 }
 void playlist_list::printItems(){
 	// for (int i = 0; i < EFFECTS_MAX; ++i) _item[i]->print(i);
-}
-
-
-
-
-void playlist_test_add(){
-	int selected = 0;
-	playlist_list * pl = playlist_listArray[0];
-
-
-
 }
