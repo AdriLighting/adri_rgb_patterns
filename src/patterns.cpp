@@ -3,18 +3,8 @@
 #include <adri_tools.h>
 
 
-// #include <vector>
-// using namespace std;
-// // typedef std::vector<heap_stats> A;
-// typedef std::vector<heap_stats> heap_stats_array;
 
-
-
-// #define DEBUG
-
-
-
-	uint32_t pInitHeap;
+uint32_t pInitHeap;
 
 #ifdef PATHEAPSTATS
 
