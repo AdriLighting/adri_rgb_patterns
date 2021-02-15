@@ -1,6 +1,7 @@
 # adri_rgb_patterns
 
 Gestion de playlists et patterns.
+
 Initialement prévu pour fonctionner avec une lampe Rgb.
 
 <pre>
