@@ -19,21 +19,20 @@ Création des instances pour les class : « playlist_management » et « program
     _programme      = new programme_loop(); 
   ```  
   
-Initialisation de la liste.
-  - indiquer la taille de la list
-      - void programme_loop::patternList_initialize(uint8_t maxCnt) 
-  - ajout des patterns
-    -coid programme_loop::patternList_item_add(String value)
-      
-          ```c++
-          _programme->patternList_initialize(chooseEffectCnt);
-          for (int j = 0; j < chooseEffectCnt; ++j) {
-              _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
-          }
-          ```
-          
+
 
           
+Initialisation de la liste.
+* Indiquer la taille de la list
+  *  void programme_loop::patternList_initialize(uint8_t maxCnt) 
+* Ajout des patterns
+  *  void programme_loop::patternList_item_add(String value)
+```c++
+      _programme->patternList_initialize(chooseEffectCnt);
+      for (int j = 0; j < chooseEffectCnt; ++j) {
+          _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
+      }
+```     
 <pre>
 Librairies
 <details>
