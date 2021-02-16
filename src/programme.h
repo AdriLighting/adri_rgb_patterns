@@ -21,35 +21,40 @@
 
 		void patternList_initialize(uint8_t maxCnt);
 		void patternList_item_add(String value);
+
 		void patternList_randomEffect(String & ret);
+
 		void patternList_item_getName(String & value, uint8_t pos);
 		boolean patternList_itemGetPosByName(String search, int & result);
+
 		boolean pattern_list_changeEffect(String search, int & result);
+		boolean pattern_list_changeEffect(boolean dir, String & ret);
+
 		void patternList_print();
 		void patternList_jsonObject(JsonObject & root);
-		boolean pattern_list_changeEffect(boolean dir, String & ret);
 
 		void patternLoop_pos_set(uint8_t pos);
 		void patternLoop_pos_get(uint8_t & pos);
 
-		void patternLoop_delay_get(uint32_t & value);
-		void patternLoop_delayCurrent_get(uint32_t & value);
-		void patternLoop_delayManual_get(boolean & value);
+		void patternLoop_delay_get 			(uint32_t & value);
+		void patternLoop_delay_set 			(int pos);
+		void patternLoop_delayCurrent_get	(uint32_t & value);
+		void patternLoop_delayManual_get	(boolean & value);
+		void patternLoop_delayCurrent_set	(int pos);
+		void patternLoop_delayManual_set	(boolean pos);
 
 		void patternLoop_posMin_get(uint8_t & value);
 		void patternLoop_posMax_get(uint8_t & value);
 
 		mod_pattern_loop patternLoop_statuDefault();
 		mod_pattern_loop patternLoop_statuNext();
-		boolean patternLoop_isPlaying();
-		boolean patternLoop_isRndPlaying();
+
+		boolean patternLoop_isPlaying 		();
+		boolean patternLoop_isRndPlaying 	();
 
 		void patternLoop_play_set			(boolean pos);
 		void patternLoop_autoPlay 			();
 		void patternLoop_playRnd_set		(boolean pos);
-		void patternLoop_delay_set 			(int pos);
-		void patternLoop_delayCurrent_set	(int pos);
-		void patternLoop_delayManual_set	(boolean pos);
 		void patternLoop_autoPlayRnd 		();
 
 	};
