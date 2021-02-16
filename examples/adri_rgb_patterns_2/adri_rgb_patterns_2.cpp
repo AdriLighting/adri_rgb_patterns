@@ -15,7 +15,6 @@ PROGMEM chooseEffectList chooseEffect [] = {
     {EX_pattern_4},
     {EX_pattern_5},
 };
-
 uint8_t chooseEffectCnt = ARRAY_SIZE(chooseEffect);
 
 programme_loop          * _programme;

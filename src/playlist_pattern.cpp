@@ -5,7 +5,8 @@
 
 String playlist_management_folder = "/playlist/";
 
-bool compositions_debug = false; 
+bool compositions_debug = true; 
+#define DEBUG
 
 playlist_item 		playlist_itemArray[EFFECTS_MAX];
 playlist_list		* playlist_listArray[COMPOSTIONS_MAX];
@@ -32,6 +33,11 @@ namespace  {
 	   return value;
 	}	
 } // name
+
+
+void playlist_statu(boolean & ret)		{playlist_instance()->list_statu(ret);}
+void playlist_play() 					{playlist_instance()->list_statu_set(true);}
+void playlist_stop() 					{playlist_instance()->list_statu_set(false);}
 
 playlist_management * playlist_instance(){
 	return playlist_manage;
@@ -114,19 +120,19 @@ void playlist_management::item_toArray(int s_pos, String s_patterName, String s_
 	if (s_pos > _item_max) {
 		if ((_item_max) >= COMPOSTIONS_MAX) {
 			#ifdef DEBUG
-				if (compositions_debug) {Serial.printf(F("\n[playlist_management::item_toArray] LIMITE MAXIMUM ATTEINTE\n"));}
+				if (compositions_debug) {Serial.print(F("\n[playlist_management::item_toArray] LIMITE MAXIMUM ATTEINTE\n"));}
 			#endif
 			return;
 		}  	
 		if (_item_max < 0) _item_max = 0;
 		#ifdef DEBUG
-			if (compositions_debug)  Serial.printf(F("[playlist_management::item_toArray]newSav\n"));
+			if (compositions_debug)  Serial.print(F("[playlist_management::item_toArray]newSav\n"));
 		#endif
 		s_pos = _item_max;
 		_item_max++;
 		newSav=true;
 		#ifdef DEBUG
-			if (compositions_debug) Serial.printf(F("\tnewSav\n"));
+			if (compositions_debug) Serial.print(F("\tnewSav\n"));
 		#endif
 	}
 
@@ -166,7 +172,7 @@ void playlist_management::item_toArray(int s_pos, String s_patterName, String s_
 		 // ); 
 	}
 
-	if (compositions_debug) compositions_print();
+	// if (compositions_debug) compositions_print();
 	#endif
 	
 	item_toTxt(); 
@@ -296,15 +302,12 @@ void playlist_management::item_loop_next(pattern_loop * ptr){
 }
 void playlist_management::item_next(){
 	_item_pos++;
-	if (_item_pos > _item_max) _item_pos = 0;
+	if (_item_pos >= _item_max) _item_pos = 0;
 }
 void playlist_management::item_rnd(){
 	_item_pos = random(0, _item_max);
-	if (_item_pos > _item_max) _item_pos = 0;
+	if (_item_pos >= _item_max) _item_pos = 0;
 }
-void playlist_statu(boolean & ret)		{playlist_instance()->list_statu(ret);}
-void playlist_play() 					{playlist_instance()->list_statu_set(true);}
-void playlist_stop() 					{playlist_instance()->list_statu_set(false);}
 
 void playlist_management::list_statu_set(boolean ret) 	{playlist_instance()->_list_statu = ret;}
 void playlist_management::list_statu(boolean & ret) 	{ret = playlist_instance()->_list_statu;}
