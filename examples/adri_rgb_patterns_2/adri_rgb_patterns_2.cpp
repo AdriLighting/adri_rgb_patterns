@@ -65,10 +65,12 @@ void setup()
 
 	_playlist       = new playlist_management(); 
 	_programme      = new programme_loop(); 
+
 	_programme->patternList_initialize(chooseEffectCnt);
 	for (int j = 0; j < chooseEffectCnt; ++j) {
 	    _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
 	}
+	
 
 	Serial.print(F("\n[programmSetting::patternLoopValue_print]\n"));
     for (int i = 0; i < patternloopSettingListCount; ++i)
