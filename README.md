@@ -4,6 +4,35 @@ Gestion de playlists et patterns.
 
 Initialement prévu pour fonctionner avec une lampe Rgb.
 
+## Utilisation des patterns
+
+Création d’une liste de pattern avec la structure : « chooseEffectList » sous forme de tableau.
+  ```c++
+    const char PROGMEM EX_pattern_1	[] = "pattern_1";
+    PROGMEM chooseEffectList chooseEffect [] = { 
+      {EX_pattern_1},
+    };
+  ```
+Création des instances pour les class : « playlist_management » et « programme_loop »
+  ```c++
+    _playlist       = new playlist_management(); 
+    _programme      = new programme_loop(); 
+  ```  
+Initialisation de la liste.
+  - indiquer la taille de la list
+      - void programme_loop::patternList_initialize(uint8_t maxCnt) 
+  - ajout des patterns
+      - void programme_loop::patternList_item_add(String value)
+      
+          ```c++
+          _programme->patternList_initialize(chooseEffectCnt);
+          for (int j = 0; j < chooseEffectCnt; ++j) {
+              _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
+          }
+          ```
+          
+
+          
 <pre>
 Librairies
 <details>
