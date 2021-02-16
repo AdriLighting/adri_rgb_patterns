@@ -6,19 +6,19 @@ Initialement prévu pour fonctionner avec une lampe Rgb.
 
 ## Utilisation des patterns
 
-Création d’une liste de pattern avec la structure : « chooseEffectList » sous forme de tableau.
+Création d’une liste de pattern avec la structure : "chooseEffectList" sous forme de tableau.
   ```c++
     const char PROGMEM EX_pattern_1	[] = "pattern_1";
     PROGMEM chooseEffectList chooseEffect [] = { 
       {EX_pattern_1},
     };
   ```
-Création des instances pour les class : « playlist_management » et « programme_loop »
+Création des instances pour les class : "playlist_management" et "programme_loop"
   ```c++
     _playlist       = new playlist_management(); 
     _programme      = new programme_loop(); 
   ```            
-Initialisation de la liste.
+### Initialisation de la liste.
 * Indiquer la taille de la list
   *  void programme_loop::patternList_initialize(uint8_t maxCnt) 
 * Ajout des patterns
@@ -29,10 +29,10 @@ Initialisation de la liste.
           _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
       }
 ``` 
-Programme managment :
+### Programme managment avec la classe "programme_loop" :
 * navigation
-  * boolean programme_loop::pattern_list_changeEffect(String search, int & result)
-  * boolean programme_loop::pattern_list_changeEffect(boolean dir, String & ret)
+  * boolean pattern_list_changeEffect(String search, int & result)
+  * boolean pattern_list_changeEffect(boolean dir, String & ret)
 * lecture en boucle
   * void patternLoop_delay_get        (uint32_t & value);
   * void patternLoop_delay_set        (int pos);
@@ -47,8 +47,8 @@ Programme managment :
   * void patternLoop_playRnd_set      (boolean pos);
   * void patternLoop_autoPlayRnd      ();  
 * data
-  * void programme_loop::patternList_print()
-  * void programme_loop::patternList_jsonObject(JsonObject & root)
+  * void patternList_print()
+  * void patternList_jsonObject(JsonObject & root)
 <pre>
 Librairies
 <details>
