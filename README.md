@@ -17,11 +17,7 @@ Création des instances pour les class : « playlist_management » et « program
   ```c++
     _playlist       = new playlist_management(); 
     _programme      = new programme_loop(); 
-  ```  
-  
-
-
-          
+  ```            
 Initialisation de la liste.
 * Indiquer la taille de la list
   *  void programme_loop::patternList_initialize(uint8_t maxCnt) 
@@ -32,7 +28,25 @@ Initialisation de la liste.
       for (int j = 0; j < chooseEffectCnt; ++j) {
           _programme->patternList_item_add(ch_toString(chooseEffect[j].name));
       }
-```     
+``` 
+Programme managment :
+* navigation
+  * boolean programme_loop::pattern_list_changeEffect(String search, int & result)
+  * boolean programme_loop::pattern_list_changeEffect(boolean dir, String & ret)
+* lecture en boucle
+  * void patternLoop_delay_get(uint32_t & value);
+  * void patternLoop_delayCurrent_get(uint32_t & value);
+  * void patternLoop_delayManual_get(boolean & value);
+  * void patternLoop_play_set			  (boolean pos);
+  * void patternLoop_autoPlay 			();
+  * void patternLoop_playRnd_set		(boolean pos);
+  * void patternLoop_delay_set 			(int pos);
+  * void patternLoop_delayCurrent_set	(int pos);
+  * void patternLoop_delayManual_set	(boolean pos);
+  * void patternLoop_autoPlayRnd 		();  
+* data
+  * void programme_loop::patternList_print()
+  * void programme_loop::patternList_jsonObject(JsonObject & root)
 <pre>
 Librairies
 <details>
