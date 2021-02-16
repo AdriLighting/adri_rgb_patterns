@@ -34,16 +34,18 @@ Programme managment :
   * boolean programme_loop::pattern_list_changeEffect(String search, int & result)
   * boolean programme_loop::pattern_list_changeEffect(boolean dir, String & ret)
 * lecture en boucle
-  * void patternLoop_delay_get(uint32_t & value);
-  * void patternLoop_delayCurrent_get(uint32_t & value);
-  * void patternLoop_delayManual_get(boolean & value);
-  * void patternLoop_play_set			  (boolean pos);
-  * void patternLoop_autoPlay 			();
-  * void patternLoop_playRnd_set		(boolean pos);
-  * void patternLoop_delay_set 			(int pos);
-  * void patternLoop_delayCurrent_set	(int pos);
-  * void patternLoop_delayManual_set	(boolean pos);
-  * void patternLoop_autoPlayRnd 		();  
+  * void patternLoop_delay_get        (uint32_t & value);
+  * void patternLoop_delay_set        (int pos);
+  * void patternLoop_delayCurrent_get (uint32_t & value);
+  * void patternLoop_delayManual_get  (boolean & value);
+  * void patternLoop_delayCurrent_set (int pos);
+  * void patternLoop_delayManual_set  (boolean pos); 
+  * boolean patternLoop_isPlaying     ();
+  * boolean patternLoop_isRndPlaying  ();
+  * void patternLoop_play_set         (boolean pos);
+  * void patternLoop_autoPlay         ();
+  * void patternLoop_playRnd_set      (boolean pos);
+  * void patternLoop_autoPlayRnd      ();  
 * data
   * void programme_loop::patternList_print()
   * void programme_loop::patternList_jsonObject(JsonObject & root)
