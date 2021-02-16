@@ -18,11 +18,12 @@ Création des instances pour les class : « playlist_management » et « program
     _playlist       = new playlist_management(); 
     _programme      = new programme_loop(); 
   ```  
+  
 Initialisation de la liste.
   - indiquer la taille de la list
       - void programme_loop::patternList_initialize(uint8_t maxCnt) 
   - ajout des patterns
-      - void programme_loop::patternList_item_add(String value)
+    -coid programme_loop::patternList_item_add(String value)
       
           ```c++
           _programme->patternList_initialize(chooseEffectCnt);
